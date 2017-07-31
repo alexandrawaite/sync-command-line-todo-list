@@ -1,0 +1,21 @@
+{
+  "name": "command-line-todo-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tasks.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "chai": "^4.1.0",
+    "mocha": "^3.4.2"
+  }
+}
