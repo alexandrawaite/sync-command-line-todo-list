@@ -1,35 +1,51 @@
 const fs = require('fs')
 const path = require('path')
-const taskStoragePath = path.resolve(__dirname, '../tasks.json')
+const taskData = path.resolve(__dirname, '../tasks.json')
 
 // checks if tasks.json exists
-function add(task) {
-  if (!fs.existsSync(taskStoragePath)) {
-    addTaskAndStorage(task)
+const add = task => {
+  if (!fs.existsSync(taskData)) {
+    createTaskStorage(task)
   } else {
     addTask(task)
   }
 }
 
-function addTaskAndStorage(task) {
+// initializes task counter and task object, stringifies them and writes them to tasks.json
+const createTaskStorage = task => {
   const initTaskStorage = JSON.stringify({
     taskIds: 1,
-    storage: [{id: 1, name: task, complete: false}],
+    storage: [{
+      id: 1,
+      name: task,
+      complete: false
+    }],
   })
 
-  fs.writeFileSync(taskStoragePath, initTaskStorage)
+  fs.writeFileSync(taskData, initTaskStorage)
   console.log("Created task 1")
 }
 
-function addTask(task) {
-  const taskHolder = JSON.parse(fs.readFileSync(taskStoragePath))
-  const newTask = {id: taskHolder.storage.length + 1, name: task, complete: false}
+// parses the tasks.json file, creates a new task object and pushes to the storage object
+const addTask = task => {
+  const taskHolder = JSON.parse(fs.readFileSync(taskData))
+
+  const newTask = {
+    id: taskHolder.storage.length + 1,
+    name: task,
+    complete: false
+  }
+
   taskHolder["storage"].push(newTask)
+
   taskHolder.taskIds++
+
   const stringifiedTaskHolder = JSON.stringify(taskHolder)
-  fs.writeFileSync(taskStoragePath, stringifiedTaskHolder)
-  // we have to use the parsed object to read in the terminal, not the stringified object
-  console.log("Created task", taskHolder.storage[taskHolder.storage.length - 1].id);
+
+  fs.writeFileSync(taskData, stringifiedTaskHolder)
+
+  // we have to log the parsed object in the terminal, not the stringified object
+  console.log(`Created task ${taskHolder.storage[taskHolder.storage.length - 1].id}`);
 }
 
 module.exports = add
